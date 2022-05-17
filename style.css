@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+.cell {
+    width: 20px;
+    height: 20px;
+    border: 2px #000000 solid;
+
+}
+
+#tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+#table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
