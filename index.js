@@ -93,6 +93,11 @@ function* runInstructions() {
                 document.getElementById('cell_0_0').style.backgroundColor ='#f0f';
                 document.getElementById('cell_'+(height-1) + '_'+(width-1)).style.backgroundColor ='#ff0'
                 console.log('DONE!');
+                setTimeout(() => {
+                    document.getElementById('table').remove();
+                    creatMaze(width, height);
+                    startMaze(); 
+                }, 2000);
                 break;
             }
             rowIndex = pathHistory[pathHistory.length - 1][0];
@@ -107,26 +112,18 @@ function* runInstructions() {
         switch(indexValue) {
             case 'right':
                 currentCell.style['border-right'] = 'none' 
-                remainingExits.left += 1;
-                remainingExits.right -= 1;
                 colIndex++;
                 break;
             case 'bottom':
                 currentCell.style['border-bottom'] = 'none' 
-                remainingExits.top += 1;
-                remainingExits.bottom -= 1;
                 rowIndex += 1;
                 break;
             case 'top':
                 currentCell.style['border-top'] = 'none' 
-                remainingExits.left += 1;
-                remainingExits.bottom -= 1;
                 rowIndex -= 1;
                 break;
             case 'left':
                 currentCell.style['border-left'] = 'none' 
-                remainingExits.right += 1;
-                remainingExits.left -= 1;
                 colIndex -= 1;
                 break;
         }
@@ -152,12 +149,17 @@ function* runInstructions() {
     }
 }
 
-const instructions = runInstructions()
 
 
 document.body.addEventListener("keyup", function(e){
     if(e.key == ' '){
-        if (interval) clearInterval(interval);
-        interval = setInterval(() => instructions.next(), 2);
+        startMaze();
     }
 });
+
+const startMaze = () => {
+    const instructions = runInstructions()
+    if (interval) clearInterval(interval);
+    interval = setInterval(() => instructions.next(), 2);
+
+}
