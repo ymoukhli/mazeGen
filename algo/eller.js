@@ -1,5 +1,5 @@
-const width = 10;
-const height = 10;
+const width = 70;
+const height = 70;
 let interval = null;
 const node = document.getElementById("root");
 let grid = Array(height)
@@ -26,9 +26,8 @@ const openDownPath = (grid, i, j) => {
     return false;
   return Math.random() > 0.5;
 };
-
-function* ellerMaze(width, height) {
-  grid = grid.map((e, i) =>
+const creatMaze = () =>
+  grid.map((e, i) =>
     e.map((_, j) => ({
       set: i * width + j,
       fromUpperRow: false,
@@ -38,21 +37,25 @@ function* ellerMaze(width, height) {
       bottom: false,
       x: j,
       y: i,
+      color: "white",
     }))
   );
+
+function* ellerMaze(width, height) {
+  grid = creatMaze();
 
   for (let j = 0; j < height; j++) {
     let rowSets = {};
     for (let i = 0; i < width; i++) {
       let setId = grid[j][i].set;
+      document.getElementById(`${j}_${i}`).style["background-color"] =
+        "#f12711";
+
       if (!rowSets[setId]) rowSets[setId] = [];
       rowSets[setId].push(grid[j][i]);
-      console.log({ rowSets });
-      yield;
       if (openRigthPath(grid, i, j) && i != width - 1) {
-        grid[j][i + 1].set = setId;
-        grid[j][i + 1].left = true;
-        grid[j][i].right = true;
+        clearRight(grid, j, i);
+        yield;
       }
     }
     if (j < height - 1) {
@@ -66,19 +69,14 @@ function* ellerMaze(width, height) {
           let y = rowSets[key][k].y;
           if (openDownPath(grid, x, y) || rowSetsLength === 1) {
             connected = true;
-            grid[y + 1][x].set = grid[y][x].set;
-            grid[y][x].bottom = true;
-            grid[y + 1][x].top = true;
+            clearDown(grid, y, x);
             yield;
           }
-          console.log(`(${x}, ${y}) : ${connected}`);
         }
         if (!connected) {
           let x = rowSets[key][rowSetsLength - 1].x;
           let y = rowSets[key][rowSetsLength - 1].y;
-          grid[y + 1][x].set = grid[y][x].set;
-          grid[y][x].bottom = true;
-          grid[y + 1][x].top = true;
+          clearDown(grid, y, x);
           yield;
         }
       }
@@ -90,32 +88,54 @@ function* ellerMaze(width, height) {
         let y = j;
         if (!grid[y][x].top && !grid[y][x].right && x < width - 1) {
           if (Math.random() > 0.5) {
-            grid[y][x + 1].set = grid[y][x].set;
-            grid[y][x + 1].left = true;
-            grid[y][x].right = true;
+            clearRight(grid, y, x);
             yield;
           } else {
-            grid[y - 1][x].set = grid[y][x].set;
-            grid[y - 1][x].bottom = true;
-            grid[y][x].top = true;
+            clearTop(grid, y, x);
             yield;
           }
         } else if (!grid[y][x].top) {
-          grid[y - 1][x].set = grid[y][x].set;
-          grid[y - 1][x].bottom = true;
-          grid[y][x].top = true;
+          clearTop(grid, y, x);
           yield;
         } else if (!grid[y][x].right && x < width - 1) {
-          grid[y][x + 1].set = grid[y][x].set;
-          grid[y][x + 1].left = true;
-          grid[y][x].right = true;
+          clearRight(grid, y, x);
           yield;
         }
       }
     }
   }
+  clearInterval(interval);
+  console.log("done");
 }
 
+const clearTop = (grid, y, x) => {
+  const topCell = document.getElementById(`${y - 1}_${x}`);
+  topCell.style["border-bottom"] = "none";
+  const currentCell = document.getElementById(`${y}_${x}`);
+  currentCell.style["border-top"] = "none";
+  grid[y - 1][x].set = grid[y][x].set;
+  grid[y - 1][x].bottom = true;
+  grid[y][x].top = true;
+};
+const clearRight = (grid, y, x) => {
+  const rightCell = document.getElementById(`${y}_${x + 1}`);
+  rightCell.style["border-left"] = "none";
+  const currentCell = document.getElementById(`${y}_${x}`);
+  currentCell.style["border-right"] = "none";
+  grid[y][x + 1].set = grid[y][x].set;
+  grid[y][x + 1].left = true;
+  grid[y][x].right = true;
+};
+const clearDown = (grid, y, x) => {
+  const downCell = document.getElementById(`${y + 1}_${x}`);
+  downCell.style["border-top"] = "none";
+  downCell.style["background-color"] = "#f5af19";
+  const currentCell = document.getElementById(`${y}_${x}`);
+  currentCell.style["border-bottom"] = "none";
+  grid[y + 1][x].set = grid[y][x].set;
+  grid[y][x].bottom = true;
+  grid[y + 1][x].top = true;
+};
 const renderer = (grid, node) => {
   const gridStr = grid.reduce(
     (acc, e, i) =>
@@ -129,8 +149,9 @@ const renderer = (grid, node) => {
             ${e.left ? "left" : ""}
             ${e.bottom ? "bottom" : ""}
             ${e.top ? "top" : ""}
-            ' id='${i}_${j}'>
-                ${e.set}
+            '
+            id='${i}_${j}'
+            style="background-color: ${e.color}">
             </div>`,
           ``
         )}
@@ -157,10 +178,12 @@ const startMaze = () => {
   if (interval) clearInterval(interval);
   interval = setInterval(() => {
     ellerNext(eller);
-  }, 2);
+  }, 0);
 };
 
 const ellerNext = (eller) => {
   eller.next(eller);
-  renderer(grid, node);
+  // renderer(grid, node);
 };
+
+renderer(creatMaze(), node);
