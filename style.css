@@ -2,8 +2,8 @@
     box-sizing: border-box;
 }
 .cell {
-    width: 20PX;
-    height: 20PX;
+    width: 40px;
+    height: 40px;
     border: 1px #000000 solid;
     display:flex;
     justify-content: center;

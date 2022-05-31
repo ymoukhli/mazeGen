@@ -1,7 +1,7 @@
 import renderer from "./render.js";
 
-const width = 100;
-const height = 100;
+const width = 20;
+const height = 20;
 const gridColorRed = "#f12711";
 const gridColorPick = "#f5af19";
 let interval = null;
@@ -69,7 +69,13 @@ const lookForBranch = (j) => {
   }
   return [-1, -1];
 };
-function HunteAndkill() {
+
+function sleep(ms) {
+  let start = Date.now();
+  while (Date.now() < start + ms) {}
+}
+
+function* HunteAndkill() {
   grid = creatMaze();
 
   // pick random cell
@@ -78,29 +84,28 @@ function HunteAndkill() {
   // color currecnt cell
 
   while (true) {
-    // yield;
+    yield;
     nodes[currentCelly][currentCellx].style["background-color"] = gridColorRed;
     grid[currentCelly][currentCellx].color = gridColorRed;
 
     const instruction = getActions(grid, currentCelly, currentCellx, "white");
 
-    // const instruction = instructions[Math.floor(Math.random() * instructions.length)];
     if (!instruction) {
       let donne = false;
       for (let k = 0; k < height; k++) {
         if (k != 0) paintRow(k - 1);
-        // paintRow(k, gridColorPick);
-        // yield;
+        paintRow(k, gridColorPick);
+        yield;
         [currentCelly, currentCellx] = lookForBranch(k);
         if (currentCelly !== -1) {
-          //   paintRow(k);
-          //   yield;
+          paintRow(k);
+          yield;
           donne = true;
           break;
         }
       }
       if (donne) continue;
-      //   paintRow(height - 1);
+      paintRow(height - 1);
       console.log("donne");
       break;
     }
@@ -135,26 +140,14 @@ document.body.addEventListener("keyup", function (e) {
   }
 });
 
-document.body.addEventListener("keyup", function (e) {
-  if (e.key == "q") {
-    startMaze();
-    // maze.next();
-    // maze.next();
-    // maze.next();
-    // maze.next();
-    // maze.next();
-    // maze.next();
-  }
-});
-
 const startMaze = () => {
   nodes = [];
   document.getElementById("table")?.remove();
   nodes = renderer(width, height, document.getElementById("root"));
 
-  HunteAndkill();
-  //   if (interval) clearInterval(interval);
-  //   interval = setInterval(() => {
-  //     maze.next();
-  //   }, 0);
+  const maze = HunteAndkill();
+  if (interval) clearInterval(interval);
+  interval = setInterval(() => {
+    maze.next();
+  }, 40);
 };
