@@ -1,28 +1,29 @@
 import createGrid from "../utils/createGrid";
 import React, { useEffect, useState } from "react";
+import Cell from '../components/Cell'
 
-const width = 50;
-const height = 50;
+const width = 10;
+const height = 10;
 const gridColorRed = "#f12711";
 const gridColorPick = "#f5af19";
 const frontiers = [];
 
 export const useAlgo = (algo) => {
-    const [grid, setGrid] = useState(createGrid(10, 10));
+    const [grids, setGrid] = useState(createGrid(10, 10));
     const [gridJSX, setGridJSX] = useState("");
     let interval = null;
     useEffect(() => {
-        console.log(grid);
+        console.log("setting gridJSX");
       setGridJSX(
-        grid.map((e, y) => (
+        grids.map((e, y) => (
           <div className="row" key={`row_${y}`}>
             {e.map((e, x) => (
-              <div key={`cell${y}_${x}`} className="cell" id={`${y}_${x}`}></div>
+              <Cell key={`cell${y}_${x}`} id={`${y}_${x}`} cell={e}/>
             ))}
           </div>
         ))
       );
-    }, [grid]);
+    }, [grids]);
 
 
     const getFrontiers = (grid, y, x) => {
@@ -56,7 +57,7 @@ export const useAlgo = (algo) => {
           grid[y - 1][x].color = gridColorPick;
         }
     };
-    const mergeFrontiers = (cell) => {
+    const mergeFrontiers = (grid, cell) => {
     const arrInstruction = [];
     if (cell.nearleft) arrInstruction.push("left");
     if (cell.nearright) arrInstruction.push("right");
@@ -65,33 +66,34 @@ export const useAlgo = (algo) => {
     
     const instruction =
         arrInstruction[Math.floor(Math.random() * arrInstruction.length)];
+        console.log(`(${cell.y}, ${cell.x})`)
     if (instruction == "left") {
-        // nodes[cell.y][cell.x].style["border-left"] = "none";
-        // nodes[cell.y][cell.x].style["background-color"] = gridColorRed;
+        grid[cell.y][cell.x]["border-left"] = false;
+        // nodes[cell.y][cell.x]["background-color"] = gridColorRed;
         grid[cell.y][cell.x].color = gridColorRed;
-        // nodes[cell.y][cell.x - 1].style["border-right"] = "none";
+        grid[cell.y][cell.x - 1]["border-right"] = false;
     }
     if (instruction == "right") {
-        // nodes[cell.y][cell.x].style["border-right"] = "none";
+        grid[cell.y][cell.x]["border-right"] = false;
         grid[cell.y][cell.x].color = gridColorRed;
-        // nodes[cell.y][cell.x].style["background-color"] = gridColorRed;
-        // nodes[cell.y][cell.x + 1].style["border-left"] = "none";
+        // nodes[cell.y][cell.x]["background-color"] = gridColorRed;
+        grid[cell.y][cell.x + 1]["border-left"] = false;
     }
     if (instruction == "bottom") {
-        // nodes[cell.y][cell.x].style["border-bottom"] = "none";
+        grid[cell.y][cell.x]["border-bottom"] = false;
         grid[cell.y][cell.x].color = gridColorRed;
-        // nodes[cell.y][cell.x].style["background-color"] = gridColorRed;
-        // nodes[cell.y + 1][cell.x].style["border-top"] = "none";
+        // nodes[cell.y][cell.x]["background-color"] = gridColorRed;
+        grid[cell.y + 1][cell.x]["border-top"] = false;
     }
     if (instruction == "top") {
-        // nodes[cell.y][cell.x].style["border-top"] = "none";
+        grid[cell.y][cell.x]["border-top"] = false;
         grid[cell.y][cell.x].color = gridColorRed;
-        // nodes[cell.y][cell.x].style["background-color"] = gridColorRed;
-        // nodes[cell.y - 1][cell.x].style["border-bottom"] = "none";
+        // nodes[cell.y][cell.x]["background-color"] = gridColorRed;
+        grid[cell.y - 1][cell.x]["border-bottom"] = false;
     }
     };
-    function* primMaze(grids, width, height) {
-        const grid = grids.map(e => e.map(({...e})));
+    function* primMaze(width, height) {
+        const grid = grids.map(e => e.map(e => ({...e})));
         // pick random cell
         let currentCellx = Math.floor(Math.random() * width);
         let currentCelly = Math.floor(Math.random() * height);
@@ -105,7 +107,7 @@ export const useAlgo = (algo) => {
           let frontierIndex = Math.floor(Math.random() * frontiers.length);
           // merge frontier
       
-          mergeFrontiers(frontiers[frontierIndex]);
+          mergeFrontiers(grid, frontiers[frontierIndex]);
           let y = frontiers[frontierIndex].y;
           let x = frontiers[frontierIndex].x;
           frontiers.splice(frontierIndex, 1);
@@ -117,25 +119,25 @@ export const useAlgo = (algo) => {
     }
 
     const generateMaze = () => {
-        console.log('here')
-        if (interval) clearInterval(interval);
-        const alg = primMaze(grid,10,10);
+        // if (interval) clearInterval(interval);
+        console.log('generateMaze')
+        const alg = primMaze(10,10);
         interval = setInterval(() => {
+          const val = alg.next();
+          console.log('settg grid')
             setGrid(prev => {
-            const val = alg.next().value;
-            if (val){
-                return val
+            console.log(grids);
+            if (val.value){
+                return val.value.map(e => e.map(e => ({...e})))
             }
             else {
+              console.log("done");
                 clearInterval(interval);
                 return prev;
             }
             });
-        }, 100);
+            console.log(val.value)
+        }, 10);
     }
-    const newAlgo = (algo) => {
-        setGrid(createGrid(10,10));
-        if (interval) clearInterval(interval);
-    }
-    return [gridJSX, newAlgo, generateMaze];
+    return [gridJSX,, generateMaze];
 }
