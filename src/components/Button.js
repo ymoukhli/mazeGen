@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const StyledButton = styled.button`
   font-family: "Ubuntu Mono";
+  border: none;
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
@@ -11,7 +12,7 @@ const StyledButton = styled.button`
   color: white;
   text-align: center;
   /* darkliniar */
-  width: 231px;
+  width: ${props => props.width ? props.width: 231}px;
   height: 102px;
   background: linear-gradient(
     258.97deg,
@@ -20,8 +21,7 @@ const StyledButton = styled.button`
   );
   border-radius: 19px;
   &:hover {
-    width: 233px;
-    height: 104px;
+    transform: scale(1.1);
     background: linear-gradient(
       258.97deg,
       rgba(90, 29, 210, 0.86) 0%,
@@ -29,6 +29,6 @@ const StyledButton = styled.button`
     );
   }
 `;
-export default function Button({ children }) {
-  return <StyledButton>{children}</StyledButton>;
+export default function Button({ onClick,children,width }) {
+  return <StyledButton onClick={() => onClick()} width={width}>{children}</StyledButton>;
 }

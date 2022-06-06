@@ -105,7 +105,7 @@ function* primMaze(width, height) {
   nodes[currentCelly][currentCellx].style["background-color"] = gridColorRed;
   grid[currentCelly][currentCellx].color = gridColorRed;
   getFrontiers(grid, nodes, currentCelly, currentCellx);
-  yield;
+  yield g;
   // pick random cell then repeate;
   while (frontiers.length > 0) {
     let frontierIndex = Math.floor(Math.random() * frontiers.length);

@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    margin: 0;
 }
 .cell {
     width: 40px;
@@ -19,12 +20,12 @@
     display: flex;
     flex-wrap: wrap;
 }
-#table {
+/* #table {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
+} */
 .right {
     border-right: none;
 }
