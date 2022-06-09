@@ -11,6 +11,9 @@
     align-items: center;
 }
 
+body {
+    background-color: #7A4AE3;
+}
 #tbody {
     display: flex;
     flex-direction: column;

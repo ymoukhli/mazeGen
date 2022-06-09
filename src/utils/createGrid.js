@@ -1,6 +1,6 @@
 export default function createGrid(width, height) {
-  const grid = [...Array(height).keys()].map((j, i) =>
-    Array(width).fill({
+  const grid = [...Array(height).keys()].map((j) =>
+    [...Array(width).keys()].map((i) => ({
       set: 0,
       left: false,
       right: false,
@@ -10,14 +10,15 @@ export default function createGrid(width, height) {
       nearright: false,
       neartop: false,
       nearbottom: false,
-      'border-top': true,
-      'border-right': true,
-      'border-left': true,
-      'border-bottom': true,
-      x: j,
-      y: i,
+      "border-top": true,
+      "border-right": true,
+      "border-left": true,
+      "border-bottom": true,
+      "background-color": "white",
+      x: i,
+      y: j,
       color: "white",
-    })
+    }))
   );
   return grid;
 }

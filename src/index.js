@@ -1,7 +1,7 @@
 import React from "react";
 import "../style.css";
 import { createRoot } from "react-dom/client";
-import styeld from 'styled-components'
+import styeld from "styled-components";
 import Grid from "./components/Grid";
 import Button from "./components/Button";
 import { useAlgo } from "./hooks/useAlgo";
@@ -15,7 +15,6 @@ const StyledApp = styeld.div`
     justify-content: start;
 
     main {
-        border: solid 1px red;
         width: 70%;
         display: flex;
         flex-direction: column;
@@ -34,21 +33,23 @@ const StyledApp = styeld.div`
             margin-bottom: 97px;
         }
     }
-`
+`;
 const App = () => {
-  const [gridJSX, , generateMaze] = useAlgo('prim')
+  const [gridJSX, setAlgo, generateMaze] = useAlgo("prim");
 
   return (
     <StyledApp>
       <main>
         <Grid gridJSX={gridJSX}></Grid>
-        <Button onClick={generateMaze} width="441">generate maze</Button>
+        <Button onClick={generateMaze} width="441">
+          generate maze
+        </Button>
       </main>
       <aside>
-        <Button>prim</Button>
-        <Button>hunt and kill</Button>
-        <Button>back track</Button>
-        <Button>eller</Button>
+        <Button onClick={() => setAlgo("prim")}>prim</Button>
+        <Button onClick={() => setAlgo("huntAndKill")}>hunt and kill</Button>
+        <Button onClick={() => setAlgo("backTrack")}>back track</Button>
+        <Button onClick={() => setAlgo("ellerMaze")}>eller</Button>
       </aside>
     </StyledApp>
   );
