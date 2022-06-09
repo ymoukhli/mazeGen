@@ -46,10 +46,12 @@ const App = () => {
         </Button>
       </main>
       <aside>
-        <Button onClick={() => setAlgo("prim")}>prim</Button>
-        <Button onClick={() => setAlgo("huntAndKill")}>hunt and kill</Button>
-        <Button onClick={() => setAlgo("backTrack")}>back track</Button>
-        <Button onClick={() => setAlgo("ellerMaze")}>eller</Button>
+        <Button onClick={() => generateMaze("prim")}>prim</Button>
+        <Button onClick={() => generateMaze("huntAndKill")}>
+          hunt and kill
+        </Button>
+        <Button onClick={() => generateMaze("backTrack")}>back track</Button>
+        <Button onClick={() => generateMaze("ellerMaze")}>eller</Button>
       </aside>
     </StyledApp>
   );

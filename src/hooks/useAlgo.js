@@ -2,8 +2,8 @@ import createGrid from "../utils/createGrid";
 import React, { useEffect, useState } from "react";
 import Cell from "../components/Cell";
 
-const width = 10;
-const height = 10;
+const width = 30;
+const height = 30;
 const gridColorRed = "#740178";
 const gridColorPick = "#f5af19";
 let interval = null;
@@ -163,7 +163,7 @@ export const useAlgo = () => {
   };
   const clearDown = (grid, y, x) => {
     grid[y + 1][x]["border-top"] = false;
-    grid[y + 1][x].color = "#f5af19";
+    grid[y + 1][x].color = gridColorPick;
     grid[y][x]["border-bottom"] = false;
     grid[y + 1][x].set = grid[y][x].set;
     grid[y][x].bottom = true;
@@ -319,7 +319,7 @@ export const useAlgo = () => {
       let rowSets = {};
       for (let i = 0; i < width; i++) {
         let setId = grid[j][i].set;
-        grid[j][i].color = "#f12711";
+        grid[j][i].color = gridColorRed;
 
         if (!rowSets[setId]) rowSets[setId] = [];
         rowSets[setId].push(grid[j][i]);
@@ -374,12 +374,13 @@ export const useAlgo = () => {
         }
       }
     }
-    clearInterval(interval);
+    // clearInterval(interval);
     console.log("done");
   }
-  const generateMaze = () => {
+  const generateMaze = (algo = "prim") => {
     if (interval) clearInterval(interval);
     const grid = createGrid(width, height);
+    console.log(grid);
     setGrid(grid);
     let alg = null;
     if (algo === "prim") alg = primMaze(grid, width, height);
@@ -398,7 +399,7 @@ export const useAlgo = () => {
           return prev;
         }
       });
-    }, 20);
+    }, 10);
   };
   return [gridJSX, setAlgo, generateMaze];
 };

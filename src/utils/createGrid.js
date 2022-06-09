@@ -1,7 +1,7 @@
 export default function createGrid(width, height) {
   const grid = [...Array(height).keys()].map((j) =>
     [...Array(width).keys()].map((i) => ({
-      set: 0,
+      set: i + j * width,
       left: false,
       right: false,
       top: false,
