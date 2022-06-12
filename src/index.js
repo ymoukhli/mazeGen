@@ -11,11 +11,11 @@ const root = createRoot(document.getElementById("root"));
 
 const StyledApp = styeld.div`
     display: felx;
-    // flex-direction: row;
-    justify-content: start;
-
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
     main {
-        width: 70%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -24,13 +24,23 @@ const StyledApp = styeld.div`
             margin-top : 62px;
         }
     }
-    aside {
-        width: 30%;
+    .algos {
+        // margin-left: 100px;
+        // display: flex;
+        // flex-direction: column;
+        // margin-top: 53px;
+        // button {
+        //     margin-bottom: 27px;
+        // }
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100vw;
         display: flex;
-        flex-direction: column;
-        margin-top: 163px;
         button {
-            margin-bottom: 97px;
+          width: 100%;
+          border-radius: 0;
         }
     }
 `;
@@ -45,14 +55,14 @@ const App = () => {
           generate maze
         </Button>
       </main>
-      <aside>
+      <div className="algos">
         <Button onClick={() => generateMaze("prim")}>prim</Button>
         <Button onClick={() => generateMaze("huntAndKill")}>
           hunt and kill
         </Button>
         <Button onClick={() => generateMaze("backTrack")}>back track</Button>
         <Button onClick={() => generateMaze("ellerMaze")}>eller</Button>
-      </aside>
+      </div>
     </StyledApp>
   );
 };

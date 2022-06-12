@@ -2,8 +2,8 @@ import createGrid from "../utils/createGrid";
 import React, { useEffect, useState } from "react";
 import Cell from "../components/Cell";
 
-const width = 30;
-const height = 30;
+const width = 15;
+const height = 15;
 const gridColorRed = "#740178";
 const gridColorPick = "#f5af19";
 let interval = null;
@@ -18,7 +18,12 @@ export const useAlgo = () => {
       grids.map((e, y) => (
         <div className="row" key={`row_${y}`}>
           {e.map((e, x) => (
-            <Cell key={`cell${y}_${x}`} id={`${y}_${x}`} cell={e} />
+            <Cell
+              key={`cell${y}_${x}`}
+              id={`${y}_${x}`}
+              cell={e}
+              width={width}
+            />
           ))}
         </div>
       ))
