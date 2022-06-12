@@ -4,8 +4,8 @@ import styled from "styled-components";
 const StyledCell = styled.div`
   width: calc(97vw / ${({ width }) => width});
   height: calc(97vw / ${({ width }) => width});
-  max-width: 40px;
-  max-height: 40px;
+  max-width: 30px;
+  max-height: 30px;
   border: 1px #000000 solid;
   border-right: ${({ right }) => (right ? "1px #000000 solid" : "none")};
   border-left: ${({ left }) => (left ? "1px #000000 solid" : "none")};

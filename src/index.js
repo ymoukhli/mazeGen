@@ -23,21 +23,16 @@ const StyledApp = styeld.div`
         button {
             margin-top : 62px;
         }
+        margin-top: 120px;
     }
     .algos {
-        // margin-left: 100px;
-        // display: flex;
-        // flex-direction: column;
-        // margin-top: 53px;
-        // button {
-        //     margin-bottom: 27px;
-        // }
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         width: 100vw;
         display: flex;
+        height: 100px;
         button {
           width: 100%;
           border-radius: 0;
