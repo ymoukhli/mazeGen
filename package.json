@@ -6,7 +6,8 @@
   "author": "ymoukhlis <ymoukhlis@sqli.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "webpack"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
