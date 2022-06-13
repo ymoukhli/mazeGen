@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 
@@ -39,4 +40,7 @@ module.exports = {
     historyApiFallback: true,
     open: true,
   },
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+  }
 };
