@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useAlgo } from "../hooks/useAlgo";
-import createGrid from "../utils/createGrid";
-export default function Grid({gridJSX}) {
+import React, {useContext } from "react";
+import { gridContext } from "../context/gridContext";
+export default function Grid() {
+  const [gridJSX] = useContext(gridContext)
   return (
     <>
       <div id="table">
