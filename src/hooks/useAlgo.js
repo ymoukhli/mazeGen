@@ -84,7 +84,6 @@ export const useAlgo = () => {
 
     const instruction =
       arrInstruction[Math.floor(Math.random() * arrInstruction.length)];
-    console.log(`(${cell.y}, ${cell.x})`);
     if (instruction == "left") {
       grid[cell.y][cell.x]["border-left"] = false;
       grid[cell.y][cell.x].color = gridColorRed;
@@ -193,7 +192,6 @@ export const useAlgo = () => {
   function* primMaze(grids, width, height) {
     let frontiers = [];
     const grid = JSON.parse(JSON.stringify(grids));
-    console.log(grid);
     // pick random cell
     let currentCellx = Math.floor(Math.random() * width);
     let currentCelly = Math.floor(Math.random() * height);
@@ -385,7 +383,6 @@ export const useAlgo = () => {
   const generateMaze = (algo = "prim") => {
     if (interval) clearInterval(interval);
     const grid = createGrid(width, height);
-    console.log(grid);
     setGrid(grid);
     let alg = null;
     if (algo === "prim") alg = primMaze(grid, width, height);
@@ -394,7 +391,6 @@ export const useAlgo = () => {
     if (algo === "ellerMaze") alg = ellerMaze(grid, width, height);
     interval = setInterval(() => {
       const val = alg.next();
-      console.log("settg grid");
       setGrid((prev) => {
         if (val.value) {
           return JSON.parse(JSON.stringify(val.value));
