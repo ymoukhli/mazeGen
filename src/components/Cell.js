@@ -32,3 +32,15 @@ export default function Cell({
     ></StyledCell>
   );
 }
+
+export const MemoizedCell = React.memo(Cell, (prev, current) => {
+  if (
+    prev.cell["border-right"] === current.cell["border-right"] &&
+    prev.cell["border-left"] === current.cell["border-left"] &&
+    prev.cell["border-bottom"] === current.cell["border-bottom"] &&
+    prev.cell["border-top"] === current.cell["border-top"] &&
+    prev.cell.color === current.cell.color
+  )
+    return true;
+  return false;
+});

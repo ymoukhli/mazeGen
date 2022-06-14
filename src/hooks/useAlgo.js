@@ -1,6 +1,6 @@
 import createGrid from "../utils/createGrid";
 import React, { useEffect, useState } from "react";
-import Cell from "../components/Cell";
+import Cell, { MemoizedCell } from "../components/Cell";
 
 const width = 15;
 const height = 15;
@@ -14,17 +14,20 @@ export const useAlgo = () => {
   const [gridJSX, setGridJSX] = useState("");
   const [algo, setAlgo] = useState("ellerMaze");
   useEffect(() => {
-    setGridJSX(
+    setGridJSX((prev) =>
       grids.map((e, y) => (
         <div className="row" key={`row_${y}`}>
-          {e.map((e, x) => (
-            <Cell
-              key={`cell${y}_${x}`}
-              id={`${y}_${x}`}
-              cell={e}
-              width={width}
-            />
-          ))}
+          {e.map((e, x) => {
+            // console.log(prev);
+            return (
+              <MemoizedCell
+                key={`cell${y}_${x}`}
+                id={`${y}_${x}`}
+                cell={e}
+                width={width}
+              />
+            );
+          })}
         </div>
       ))
     );
